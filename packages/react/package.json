@@ -1,4 +1,7 @@
 {
   "name": "@typed-storage/react",
-  "scripts": {}
+  "scripts": {},
+  "dependencies": {
+    "@standard-schema/spec": "^1.0.0"
+  }
 }
