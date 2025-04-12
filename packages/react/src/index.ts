@@ -1,0 +1,1 @@
+export { defineStorage } from "./defineStorage";
