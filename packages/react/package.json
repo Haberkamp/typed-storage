@@ -3,5 +3,9 @@
   "scripts": {},
   "dependencies": {
     "@standard-schema/spec": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@types/react": "^19.1.1",
+    "react": "^19.1.0"
   }
 }
