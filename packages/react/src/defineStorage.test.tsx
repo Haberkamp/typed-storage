@@ -61,3 +61,13 @@ test("throws error when value violates schema", async () => {
     expect(() => setValue("hi")).toThrowError()
   })
 })
+
+// Type tests
+;(() => {
+  const { useStorage } = defineStorage({
+    someKey: z.string(),
+  })
+
+  // @ts-expect-error
+  useStorage("some-non-existent-key")
+})()

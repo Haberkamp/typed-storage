@@ -1,6 +1,8 @@
 import { StandardSchemaV1 } from "@standard-schema/spec"
 import { useState } from "react"
 
+type KeyOf<T extends object> = Extract<keyof T, string>
+
 export function standardValidate<T extends StandardSchemaV1>(
   schema: T,
   input: StandardSchemaV1.InferInput<T>,
@@ -18,8 +20,10 @@ export function standardValidate<T extends StandardSchemaV1>(
   return result.value
 }
 
-export function defineStorage(schema: Record<string, StandardSchemaV1>) {
-  function useStorage(key: string) {
+export function defineStorage<T extends Record<string, StandardSchemaV1>>(
+  schema: T,
+) {
+  function useStorage(key: KeyOf<T>) {
     const [value, setValue] = useState<string | null>(localStorage.getItem(key))
 
     function set(newValue: string) {
