@@ -1,4 +1,4 @@
-import { beforeEach, expect, test, vi } from "vitest";
+import { beforeEach, expect, test } from "vitest";
 import { renderHook } from "vitest-browser-react";
 import { act } from "react";
 import { defineStorage } from "./defineStorage";
