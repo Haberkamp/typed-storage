@@ -1,0 +1,26 @@
+---
+description: 
+globs: *.test.ts,*.test.tsx
+alwaysApply: false
+---
+# Unit tests
+
+Split up the unit test in three stages: Arrange, Act
+and Assert. Inside Arrange you set up everything that's
+needed for the test scenario. In Act you execute the 
+scenarion, this is usually just a single line of code,
+but not always. And in Act you assert the results of
+that action.
+
+```ts
+test("some example test", () => {
+  // ARRANGE
+  const someNumber = 40;
+
+  // ACT
+  const result = add(2, someNumber);
+
+  // ASSERT
+  expect(result).toBe(42);
+})
+```
