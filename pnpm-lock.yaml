@@ -36,6 +36,9 @@ importers:
       playwright:
         specifier: ^1.51.1
         version: 1.51.1
+      typescript:
+        specifier: ^5.4.2
+        version: 5.8.3
       vite:
         specifier: ^6.2.6
         version: 6.2.6
@@ -1330,6 +1333,12 @@ packages:
       turbo-linux-arm64: 2.5.0
       turbo-windows-64: 2.5.0
       turbo-windows-arm64: 2.5.0
+    dev: true
+
+  /typescript@5.8.3:
+    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
     dev: true
 
   /update-browserslist-db@1.1.3(browserslist@4.24.4):
