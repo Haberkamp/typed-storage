@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "vitest",
     "test": "vitest",
-    "test:headless": "vitest run --browser.headless"
+    "test:headless": "vitest run --browser.headless",
+    "test:types": "tsc --noEmit"
   },
   "dependencies": {
     "@standard-schema/spec": "^1.0.0"
