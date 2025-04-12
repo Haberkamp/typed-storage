@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
       turbo:
         specifier: ^2.5.0
         version: 2.5.0
@@ -41,7 +44,7 @@ importers:
         version: 3.1.1(@vitest/browser@3.1.1)
       vitest-browser-react:
         specifier: ^0.1.1
-        version: 0.1.1(@vitest/browser@3.1.1)(react-dom@19.1.0)(react@19.1.0)(vitest@3.1.1)
+        version: 0.1.1(@types/react@19.1.1)(@vitest/browser@3.1.1)(react-dom@19.1.0)(react@19.1.0)(vitest@3.1.1)
 
 packages:
 
@@ -718,7 +721,6 @@ packages:
     resolution: {integrity: sha512-ePapxDL7qrgqSF67s0h9m412d9DbXyC1n59O2st+9rjuuamWsZuD2w55rqY12CbzsZ7uVXb5Nw0gEp9Z8MMutQ==}
     dependencies:
       csstype: 3.1.3
-    dev: false
 
   /@vitejs/plugin-react@4.3.4(vite@6.2.6):
     resolution: {integrity: sha512-SCCPBJtYLdE8PX/7ZQAs1QAZ8Jqwih+0VBLum1EGqmCCQal+MIUqLCzj3ZUy8ufbC0cAM4LRlSTm7IQJwWT4ug==}
@@ -918,7 +920,6 @@ packages:
 
   /csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
-    dev: false
 
   /debug@4.4.0:
     resolution: {integrity: sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==}
@@ -1126,6 +1127,12 @@ packages:
       nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
+    dev: true
+
+  /prettier@3.5.3:
+    resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /pretty-format@27.5.1:
@@ -1405,7 +1412,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitest-browser-react@0.1.1(@vitest/browser@3.1.1)(react-dom@19.1.0)(react@19.1.0)(vitest@3.1.1):
+  /vitest-browser-react@0.1.1(@types/react@19.1.1)(@vitest/browser@3.1.1)(react-dom@19.1.0)(react@19.1.0)(vitest@3.1.1):
     resolution: {integrity: sha512-n9l+sIAexKqqfBuEkjVGdfZ4xAn1Gn/+wc4Mo8KsUSUOVoM9evSY0rVXdMIzCQqloT/zvmFGAtziFINkqu+t7g==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
@@ -1421,6 +1428,7 @@ packages:
       '@types/react-dom':
         optional: true
     dependencies:
+      '@types/react': 19.1.1
       '@vitest/browser': 3.1.1(playwright@1.51.1)(vite@6.2.6)(vitest@3.1.1)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
