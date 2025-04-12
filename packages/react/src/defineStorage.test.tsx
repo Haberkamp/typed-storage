@@ -25,3 +25,17 @@ test("writes to the storage", async () => {
   const [value] = result.current;
   expect(value).toBe("someValue");
 });
+
+test("reads existing value from the storage", async () => {
+  // ARRANGE
+  const { useStorage } = defineStorage();
+  localStorage.setItem("someKey", "someValue");
+
+  const subject = renderHook(() => useStorage("someKey"));
+
+  // ACT
+  const [result] = subject.result.current;
+
+  // ASSERT
+  expect(result).toBe("someValue");
+});
