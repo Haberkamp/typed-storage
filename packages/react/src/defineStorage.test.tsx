@@ -1,41 +1,41 @@
-import { beforeEach, expect, test } from "vitest";
-import { renderHook } from "vitest-browser-react";
-import { act } from "react";
-import { defineStorage } from "./defineStorage";
+import { beforeEach, expect, test } from "vitest"
+import { renderHook } from "vitest-browser-react"
+import { act } from "react"
+import { defineStorage } from "./defineStorage"
 
 beforeEach(() => {
-  localStorage.clear();
-});
+  localStorage.clear()
+})
 
 test("writes to the storage", async () => {
   // ARRANGE
-  const { useStorage } = defineStorage();
-  const { result } = renderHook(() => useStorage("someKey"));
+  const { useStorage } = defineStorage()
+  const { result } = renderHook(() => useStorage("someKey"))
 
   // ACT
   act(() => {
-    const [, setValue] = result.current;
+    const [, setValue] = result.current
 
-    setValue("someValue");
-  });
+    setValue("someValue")
+  })
 
   // ASSERT
-  expect(localStorage.getItem("someKey")).toBe("someValue");
+  expect(localStorage.getItem("someKey")).toBe("someValue")
 
-  const [value] = result.current;
-  expect(value).toBe("someValue");
-});
+  const [value] = result.current
+  expect(value).toBe("someValue")
+})
 
 test("reads existing value from the storage", async () => {
   // ARRANGE
-  const { useStorage } = defineStorage();
-  localStorage.setItem("someKey", "someValue");
+  const { useStorage } = defineStorage()
+  localStorage.setItem("someKey", "someValue")
 
-  const subject = renderHook(() => useStorage("someKey"));
+  const subject = renderHook(() => useStorage("someKey"))
 
   // ACT
-  const [result] = subject.result.current;
+  const [result] = subject.result.current
 
   // ASSERT
-  expect(result).toBe("someValue");
-});
+  expect(result).toBe("someValue")
+})

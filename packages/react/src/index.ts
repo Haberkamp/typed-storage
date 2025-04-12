@@ -1,1 +1,1 @@
-export { defineStorage } from "./defineStorage";
+export { defineStorage } from "./defineStorage"
