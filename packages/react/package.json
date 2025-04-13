@@ -2,6 +2,7 @@
   "name": "@typed-storage/react",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "dev": "vitest",
     "test": "vitest --typecheck",
     "test:headless": "vitest run --browser.headless --typecheck",
