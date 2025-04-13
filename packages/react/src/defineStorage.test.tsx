@@ -8,7 +8,7 @@ beforeEach(() => {
   localStorage.clear()
 })
 
-test("writes to the storage", async () => {
+test("writes to the storage", () => {
   // ARRANGE
   const { useStorage } = defineStorage({
     someKey: z.string(),
@@ -30,7 +30,7 @@ test("writes to the storage", async () => {
   expect(value).toBe("someValue")
 })
 
-test("reads existing value from the storage", async () => {
+test("reads existing value from the storage", () => {
   // ARRANGE
   const { useStorage } = defineStorage({
     someKey: z.string(),
@@ -47,7 +47,7 @@ test("reads existing value from the storage", async () => {
   expect(result).toBe("someValue")
 })
 
-test("throws error when value violates schema", async () => {
+test("throws error when value violates schema", () => {
   // ARRANGE
   const { useStorage } = defineStorage({
     someKey: z.string().min(5),
