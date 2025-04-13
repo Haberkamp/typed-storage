@@ -8,7 +8,7 @@
     "dev": "vitest",
     "test": "vitest --typecheck",
     "test:headless": "vitest run --browser.headless --typecheck",
-    "test:exports": "attw --pack .",
+    "test:exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "lint": "eslint ./src"
   },
   "dependencies": {
