@@ -10,8 +10,7 @@
     "test": "vitest --typecheck",
     "test:headless": "vitest run --browser.headless --typecheck",
     "test:exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
-    "lint": "eslint ./src",
-    "release": "pnpm build && changeset publish"
+    "lint": "eslint ./src"
   },
   "dependencies": {
     "@standard-schema/spec": "^1.0.0"
