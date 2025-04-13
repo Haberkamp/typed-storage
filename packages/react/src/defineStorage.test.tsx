@@ -73,3 +73,18 @@ test("throws an error when reading a value and it violates the schema", () => {
   // ACT & ASSERT
   expect(() => renderHook(() => useStorage("someKey"))).toThrowError()
 })
+
+test("it returns undefined when there's not value for the key", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someKey: z.string(),
+  })
+
+  const subject = renderHook(() => useStorage("someKey"))
+
+  // ACT
+  const [result] = subject.result.current
+
+  // ASSERT
+  expect(result).toBeUndefined()
+})
