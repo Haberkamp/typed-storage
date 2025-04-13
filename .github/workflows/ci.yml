@@ -38,6 +38,7 @@ jobs:
         run: npx turbo run lint
 
       - name: Install playwright
+        working-directory: packages/react
         run: npx playwright install --with-deps
 
       - name: Run tests
