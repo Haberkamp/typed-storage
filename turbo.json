@@ -4,8 +4,8 @@
     "build": {
       "outputs": ["dist/**"]
     },
-    "test": {
-      "outputs": ["coverage/**"]
-    }
+    "test": {},
+    "test:exports": {},
+    "lint": {}
   }
 }
