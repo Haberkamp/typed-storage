@@ -14,7 +14,7 @@ export function standardValidate<T extends StandardSchemaV1>(
 
   // if the `issues` field exists, the validation failed
   if (result.issues) {
-    throw new Error(JSON.stringify(result.issues, null, 2))
+    throw new Error(JSON.stringify(result.issues, undefined, 2))
   }
 
   return result.value
@@ -28,7 +28,7 @@ export function defineStorage<T extends Record<string, StandardSchemaV1>>(
   ): [string | undefined, (value: string) => void] {
     const [value, setValue] = useState<string | undefined>(() => {
       const storedValue = localStorage.getItem(key)
-      if (storedValue === null) return undefined
+      if (storedValue === null) return
 
       standardValidate(schema[key], storedValue)
       return storedValue
