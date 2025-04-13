@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { defineStorage } from "./defineStorage"
+import { defineStorage } from "./define-storage"
 import { test, assertType } from "vitest"
 
 test("it's not possible to insert a value that violates the schema", () => {
