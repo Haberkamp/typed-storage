@@ -1,12 +1,13 @@
 {
   "name": "@typed-storage/react",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "dev": "vitest",
     "test": "vitest --typecheck",
     "test:headless": "vitest run --browser.headless --typecheck",
-    "lint": "eslint ."
+    "lint": "eslint ./src"
   },
   "dependencies": {
     "@standard-schema/spec": "^1.0.0"

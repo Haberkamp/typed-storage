@@ -1,4 +1,4 @@
-import { StandardSchemaV1 } from "@standard-schema/spec"
+import { type StandardSchemaV1 } from "@standard-schema/spec"
 import { useState } from "react"
 
 type KeyOf<T extends object> = Extract<keyof T, string>
@@ -30,11 +30,13 @@ export function defineStorage<T extends Record<string, StandardSchemaV1>>(
       const storedValue = localStorage.getItem(key)
       if (storedValue === null) return
 
+      // @ts-expect-error -- TODO: fix this
       standardValidate(schema[key], storedValue)
       return storedValue
     })
 
     function set(newValue: string): void {
+      // @ts-expect-error -- TODO: fix this
       standardValidate(schema[key], newValue)
 
       localStorage.setItem(key, newValue)

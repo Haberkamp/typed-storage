@@ -1,7 +1,7 @@
 import { beforeEach, expect, test } from "vitest"
 import { renderHook } from "vitest-browser-react"
 import { act } from "react"
-import { defineStorage } from "./define-storage"
+import { defineStorage } from "./define-storage.js"
 import { z } from "zod"
 
 beforeEach(() => {

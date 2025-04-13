@@ -1,1 +1,1 @@
-export { defineStorage } from "./define-storage"
+export { defineStorage } from "./define-storage.js"
