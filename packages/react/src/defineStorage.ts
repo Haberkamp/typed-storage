@@ -23,7 +23,9 @@ export function standardValidate<T extends StandardSchemaV1>(
 export function defineStorage<T extends Record<string, StandardSchemaV1>>(
   schema: T,
 ) {
-  function useStorage(key: KeyOf<T>) {
+  function useStorage(
+    key: KeyOf<T>,
+  ): [string | undefined, (value: string) => void] {
     const [value, setValue] = useState<string | undefined>(() => {
       const storedValue = localStorage.getItem(key)
       if (storedValue === null) return undefined
@@ -32,7 +34,7 @@ export function defineStorage<T extends Record<string, StandardSchemaV1>>(
       return storedValue
     })
 
-    function set(newValue: string) {
+    function set(newValue: string): void {
       standardValidate(schema[key], newValue)
 
       localStorage.setItem(key, newValue)
