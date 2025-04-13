@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "vitest",
     "test": "vitest --typecheck",
-    "test:headless": "vitest run --browser.headless --typecheck"
+    "test:headless": "vitest run --browser.headless --typecheck",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@standard-schema/spec": "^1.0.0"
