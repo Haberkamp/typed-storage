@@ -62,6 +62,18 @@ test("throws error when value violates schema", async () => {
   })
 })
 
+test("throws an error when reading a value and it violates the schema", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someKey: z.string().min(5),
+  })
+
+  localStorage.setItem("someKey", "hi")
+
+  // ACT & ASSERT
+  expect(() => renderHook(() => useStorage("someKey"))).toThrowError()
+})
+
 // Type tests
 // TEST: it's not possible to access a non existent key
 ;(() => {
