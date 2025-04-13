@@ -88,3 +88,95 @@ test("it returns undefined when there's not value for the key", () => {
   // ASSERT
   expect(result).toBeUndefined()
 })
+
+test("writes a number to the storage", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someNumberKey: z.number(),
+  })
+
+  const { result } = renderHook(() => useStorage("someNumberKey"))
+
+  // ACT
+  act(() => {
+    const [, setValue] = result.current
+
+    setValue(42)
+  })
+
+  // ASSERT
+  expect(localStorage.getItem("someNumberKey")).toBe("42")
+
+  const [value] = result.current
+  expect(value).toBe(42)
+})
+
+test("writes a boolean to the storage", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someBooleanKey: z.boolean(),
+  })
+
+  const { result } = renderHook(() => useStorage("someBooleanKey"))
+
+  // ACT
+  act(() => {
+    const [, setValue] = result.current
+
+    setValue(true)
+  })
+
+  // ASSERT
+  expect(localStorage.getItem("someBooleanKey")).toBe("true")
+
+  const [value] = result.current
+  expect(value).toBe(true)
+})
+
+test("writes an object to the storage", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someObjectKey: z.object({
+      someProperty: z.string(),
+    }),
+  })
+
+  const { result } = renderHook(() => useStorage("someObjectKey"))
+
+  // ACT
+  act(() => {
+    const [, setValue] = result.current
+
+    setValue({ someProperty: "someValue" })
+  })
+
+  // ASSERT
+  expect(localStorage.getItem("someObjectKey")).toBe(
+    JSON.stringify({ someProperty: "someValue" }),
+  )
+
+  const [value] = result.current
+  expect(value).toEqual({ someProperty: "someValue" })
+})
+
+test("retrieve an object from local storage when mounting the component", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someObjectKey: z.object({
+      someProperty: z.string(),
+    }),
+  })
+
+  localStorage.setItem(
+    "someObjectKey",
+    JSON.stringify({ someProperty: "someValue" }),
+  )
+
+  const subject = renderHook(() => useStorage("someObjectKey"))
+
+  // ACT
+  const [result] = subject.result.current
+
+  // ASSERT
+  expect(result).toEqual({ someProperty: "someValue" })
+})
