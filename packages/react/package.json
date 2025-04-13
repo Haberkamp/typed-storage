@@ -19,6 +19,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/browser": "3.1.1",
     "eslint": "^9.24.0",
+    "eslint-plugin-unicorn": "^58.0.0",
     "playwright": "^1.51.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
