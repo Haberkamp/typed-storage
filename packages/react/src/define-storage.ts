@@ -25,21 +25,44 @@ export function defineStorage<T extends Record<string, StandardSchemaV1>>(
 ) {
   function useStorage(
     key: KeyOf<T>,
-  ): [string | undefined, (value: string) => void] {
-    const [value, setValue] = useState<string | undefined>(() => {
+  ): [
+    StandardSchemaV1.InferOutput<T[KeyOf<T>]> | undefined,
+    (value: StandardSchemaV1.InferInput<T[KeyOf<T>]>) => void,
+  ] {
+    const [value, setValue] = useState<
+      StandardSchemaV1.InferOutput<T[KeyOf<T>]> | undefined
+    >(() => {
       const storedValue = localStorage.getItem(key)
       if (storedValue === null) return
 
-      // @ts-expect-error -- TODO: fix this
-      standardValidate(schema[key], storedValue)
-      return storedValue
+      let valueToValidate: unknown = storedValue
+
+      try {
+        const parsed = JSON.parse(storedValue) as unknown
+        valueToValidate = parsed
+      } catch (error) {
+        const isJSONParseError = error instanceof SyntaxError
+        if (!isJSONParseError) {
+          throw error
+        }
+      }
+
+      return standardValidate(
+        schema[key],
+        // We can assert here, because we know that the value we get is part of the schema
+        valueToValidate as StandardSchemaV1.InferInput<T[KeyOf<T>]>,
+      )
     })
 
-    function set(newValue: string): void {
-      // @ts-expect-error -- TODO: fix this
+    function set(newValue: StandardSchemaV1.InferInput<T[KeyOf<T>]>): void {
       standardValidate(schema[key], newValue)
 
-      localStorage.setItem(key, newValue)
+      if (typeof newValue === "string") {
+        localStorage.setItem(key, newValue)
+      } else {
+        localStorage.setItem(key, JSON.stringify(newValue))
+      }
+
       setValue(newValue)
     }
 

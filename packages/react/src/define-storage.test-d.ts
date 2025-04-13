@@ -36,3 +36,55 @@ test("it's not possible to access a non existent key", () => {
   // @ts-expect-error -- Cannot access a non existent key
   assertType(useStorage("some-non-existent-key"))
 })
+
+test("the value has a type of string", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someKey: z.string(),
+  })
+
+  // ACT
+  const [result] = useStorage("someKey")
+
+  // ASSERT
+  assertType<string | undefined>(result)
+})
+
+test("the value has a type of boolean", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someBooleanKey: z.boolean(),
+  })
+
+  // ACT
+  const [result] = useStorage("someBooleanKey")
+
+  // ASSERT
+  assertType<boolean | undefined>(result)
+})
+
+test("the value has a type of number", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someNumberKey: z.number(),
+  })
+
+  // ACT
+  const [result] = useStorage("someNumberKey")
+
+  // ASSERT
+  assertType<number | undefined>(result)
+})
+
+test("value must have type of undefined", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someNumberKey: z.number(),
+  })
+
+  // ACT
+  const [result] = useStorage("someNumberKey")
+
+  // ASSERT
+  assertType<number | undefined>(result)
+})
