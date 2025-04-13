@@ -37,6 +37,9 @@ jobs:
       - name: Lint files
         run: npx turbo run lint
 
+      - name: Install playwright
+        run: npx playwright install --with-deps
+
       - name: Run tests
         run: npx turbo run test
 
