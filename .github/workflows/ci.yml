@@ -37,11 +37,11 @@ jobs:
       - name: Lint files
         run: npx turbo run lint
 
-      - name: Check exports
-        run: npx turbo run test:exports
-
       - name: Run tests
         run: npx turbo run test
 
       - name: Build package
         run: npx turbo run build
+
+      - name: Check exports
+        run: npx turbo run test:exports
