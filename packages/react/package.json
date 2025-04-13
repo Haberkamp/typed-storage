@@ -1,5 +1,6 @@
 {
   "name": "@typed-storage/react",
+  "license": "MIT",
   "scripts": {
     "dev": "vitest",
     "test": "vitest --typecheck",
