@@ -63,11 +63,42 @@ test("throws error when value violates schema", async () => {
 })
 
 // Type tests
+// TEST: it's not possible to access a non existent key
 ;(() => {
+  // ARRANGE
   const { useStorage } = defineStorage({
     someKey: z.string(),
   })
 
+  // ACT & ASSERT
   // @ts-expect-error
   useStorage("some-non-existent-key")
+})()
+
+// TEST: it's not possible to access a non string key
+;(() => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someKey: z.string(),
+  })
+
+  // ACT & ASSERT
+  // @ts-expect-error
+  useStorage(1)
+})()
+
+// TEST: it's not possible to insert a value that violates the schema
+;(() => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someKey: z.string(),
+  })
+
+  const [, setValue] = useStorage("someKey")
+
+  // ACT & ASSERT
+  act(() => {
+    // @ts-expect-error
+    setValue(1)
+  })
 })()
