@@ -71,6 +71,6 @@ You can install this package with any package manager you like.
 pnpm add @typed-storage/react
 ```
 
-## 💭 Feedback and Contributing
+## Feedback and Contributing
 
 I highly appreceate your feedback! Please create an [issue](https://github.com/Haberkamp/typed-storage/issues/new), if you've found any bugs or want to request a feature.
