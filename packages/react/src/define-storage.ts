@@ -23,12 +23,40 @@ export function standardValidate<T extends StandardSchemaV1>(
 export function defineStorage<T extends Record<string, StandardSchemaV1>>(
   schema: T,
 ) {
-  function useStorage(
-    key: KeyOf<T>,
+  function useStorage<K extends KeyOf<T>>(
+    key: K,
   ): [
-    StandardSchemaV1.InferOutput<T[KeyOf<T>]> | undefined,
-    (value: StandardSchemaV1.InferInput<T[KeyOf<T>]>) => void,
+    StandardSchemaV1.InferOutput<T[K]> | undefined,
+    (value: StandardSchemaV1.InferInput<T[K]> | undefined) => void,
+  ]
+  function useStorage<K extends KeyOf<T>>(
+    key: K,
+    fallbackValue: StandardSchemaV1.InferInput<T[K]>,
+  ): [
+    StandardSchemaV1.InferOutput<T[K]>,
+    (value: StandardSchemaV1.InferInput<T[K]> | undefined) => void,
+  ]
+  function useStorage<K extends KeyOf<T>>(
+    key: K,
+    fallbackValue?: unknown,
+  ): [
+    StandardSchemaV1.InferOutput<T[K]> | undefined,
+    (value: StandardSchemaV1.InferInput<T[K]> | undefined) => void,
   ] {
+    // Validate fallback value if provided
+    let validatedFallback: StandardSchemaV1.InferOutput<T[K]> | undefined =
+      undefined
+
+    if (fallbackValue !== undefined) {
+      // We know schema[key] exists because K extends KeyOf<T>
+      const schemaForKey = schema[key] as StandardSchemaV1
+      // This will throw if fallbackValue doesn't match the schema
+      validatedFallback = standardValidate(
+        schemaForKey,
+        fallbackValue as StandardSchemaV1.InferInput<T[K]>,
+      )
+    }
+
     const [value, setValue] = useState<
       StandardSchemaV1.InferOutput<T[KeyOf<T>]> | undefined
     >(() => {
@@ -54,8 +82,18 @@ export function defineStorage<T extends Record<string, StandardSchemaV1>>(
       )
     })
 
-    function set(newValue: StandardSchemaV1.InferInput<T[KeyOf<T>]>): void {
-      standardValidate(schema[key], newValue)
+    function set(
+      newValue: StandardSchemaV1.InferInput<T[K]> | undefined,
+    ): void {
+      if (newValue === undefined) {
+        localStorage.removeItem(key)
+        setValue(undefined)
+        return
+      }
+
+      // We know schema[key] exists because K extends KeyOf<T>
+      const schemaForKey = schema[key] as StandardSchemaV1
+      standardValidate(schemaForKey, newValue)
 
       if (typeof newValue === "string") {
         localStorage.setItem(key, newValue)

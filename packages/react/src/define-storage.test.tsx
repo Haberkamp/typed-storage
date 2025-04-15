@@ -47,6 +47,27 @@ test("reads existing value from the storage", () => {
   expect(result).toBe("someValue")
 })
 
+test("unset the value", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someKey: z.string(),
+  })
+
+  const subject = renderHook(() => useStorage("someKey"))
+  const [, setValue] = subject.result.current
+
+  // ACT
+
+  act(() => {
+    setValue(undefined)
+  })
+
+  const [result] = subject.result.current
+
+  // ASSERT
+  expect(result).toBeUndefined()
+})
+
 test("throws error when value violates schema", () => {
   // ARRANGE
   const { useStorage } = defineStorage({
