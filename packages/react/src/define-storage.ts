@@ -58,10 +58,10 @@ export function defineStorage<T extends Record<string, StandardSchemaV1>>(
     }
 
     const [value, setValue] = useState<
-      StandardSchemaV1.InferOutput<T[KeyOf<T>]> | undefined
+      StandardSchemaV1.InferOutput<T[K]> | undefined
     >(() => {
       const storedValue = localStorage.getItem(key)
-      if (storedValue === null) return
+      if (storedValue === null) return validatedFallback
 
       let valueToValidate: unknown = storedValue
 
@@ -75,10 +75,12 @@ export function defineStorage<T extends Record<string, StandardSchemaV1>>(
         }
       }
 
+      // We know schema[key] exists because K extends KeyOf<T>
+      const schemaForKey = schema[key] as StandardSchemaV1
       return standardValidate(
-        schema[key],
+        schemaForKey,
         // We can assert here, because we know that the value we get is part of the schema
-        valueToValidate as StandardSchemaV1.InferInput<T[KeyOf<T>]>,
+        valueToValidate as StandardSchemaV1.InferInput<T[K]>,
       )
     })
 
@@ -87,7 +89,7 @@ export function defineStorage<T extends Record<string, StandardSchemaV1>>(
     ): void {
       if (newValue === undefined) {
         localStorage.removeItem(key)
-        setValue(undefined)
+        setValue(validatedFallback)
         return
       }
 
