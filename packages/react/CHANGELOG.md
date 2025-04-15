@@ -1,5 +1,15 @@
 # @typed-storage/react
 
+## 0.3.0
+
+### Minor Changes
+
+- aae9471: Add option to define fallback
+
+### Patch Changes
+
+- de4e2fb: Allow removing the value from localStorage
+
 ## 0.2.0
 
 ### Minor Changes
