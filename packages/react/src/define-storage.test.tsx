@@ -180,3 +180,48 @@ test("retrieve an object from local storage when mounting the component", () => 
   // ASSERT
   expect(result).toEqual({ someProperty: "someValue" })
 })
+
+test("returns the fallback value when the value for the key is not in the storage", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someKey: z.string(),
+  })
+
+  const subject = renderHook(() => useStorage("someKey", "fallbackValue"))
+
+  // ACT
+  const [result] = subject.result.current
+
+  // ASSERT
+  expect(result).toBe("fallbackValue")
+})
+
+test("throws an error when the fallback value violates the schema", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someKey: z.string(),
+  })
+
+  // ACT & ASSERT
+  expect(() => {
+    // @ts-expect-error -- number is not assignable to string
+    renderHook(() => useStorage("someKey", 1))
+  }).toThrowError()
+})
+
+test("returns the set value when a fallback value is defined but the key exists in the storage", () => {
+  // ARRANGE
+  const { useStorage } = defineStorage({
+    someKey: z.string(),
+  })
+
+  localStorage.setItem("someKey", "someValue")
+
+  const subject = renderHook(() => useStorage("someKey", "fallbackValue"))
+
+  // ACT
+  const [result] = subject.result.current
+
+  // ASSERT
+  expect(result).toBe("someValue")
+})

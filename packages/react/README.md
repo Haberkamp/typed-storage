@@ -63,6 +63,23 @@ export function MyComponent() {
 }
 ```
 
+### Fallback values
+
+You can define a fallback value for the key if it doesn't exist in the storage.
+
+```tsx
+export function MyComponent() {
+  const [theme, setTheme] = useStorage("theme", "light")
+
+  return (
+    <>
+      {/* This will be "light" because the key doesn't exist in the storage */}
+      <div>{theme}</div>
+    </>
+  )
+}
+```
+
 ## Installation
 
 You can install this package with any package manager you like.
