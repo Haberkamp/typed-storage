@@ -13,6 +13,7 @@ Usage does vary depending on the framework you're using.
 
 - [React](./packages/react)
 - Vue (coming soon)
+- [Vanilla JS](./packages/core)
 
 ## Feedback and Contributing
 

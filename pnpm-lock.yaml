@@ -18,6 +18,43 @@ importers:
         specifier: ^2.5.0
         version: 2.5.0
 
+  packages/core:
+    dependencies:
+      '@standard-schema/spec':
+        specifier: ^1.0.0
+        version: 1.0.0
+    devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: ^0.17.4
+        version: 0.17.4
+      '@eslint/js':
+        specifier: ^9.24.0
+        version: 9.24.0
+      '@vitest/browser':
+        specifier: 3.1.1
+        version: 3.1.1(playwright@1.51.1)(vite@6.2.6)(vitest@3.1.1)
+      eslint:
+        specifier: ^9.24.0
+        version: 9.24.0
+      eslint-plugin-unicorn:
+        specifier: ^58.0.0
+        version: 58.0.0(eslint@9.24.0)
+      playwright:
+        specifier: ^1.51.1
+        version: 1.51.1
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+      typescript-eslint:
+        specifier: ^8.29.1
+        version: 8.29.1(eslint@9.24.0)(typescript@5.8.3)
+      vitest:
+        specifier: 3.1.1
+        version: 3.1.1(@vitest/browser@3.1.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.24.2
+
   packages/react:
     dependencies:
       '@standard-schema/spec':
