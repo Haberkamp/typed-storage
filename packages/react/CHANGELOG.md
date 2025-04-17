@@ -1,5 +1,11 @@
 # @typed-storage/react
 
+## 0.3.1
+
+### Patch Changes
+
+- 16913bd: Include typescript definitions
+
 ## 0.3.0
 
 ### Minor Changes
