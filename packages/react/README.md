@@ -32,11 +32,11 @@ import { defineStorage } from "@typed-storage/react"
 // Feel free to use any other StandardSchema compatible library
 import { z } from "zod"
 
-const { useStorage } = defineStorage({
+const { useStorage, storage } = defineStorage({
   theme: z.enum(["light", "dark"]),
 })
 
-export { useStorage }
+export { useStorage, storage }
 ```
 
 2. Use the hook
@@ -78,6 +78,19 @@ export function MyComponent() {
     </>
   )
 }
+```
+
+## Outside of React
+
+To a type-safe way to access localStorage outside of React,
+you can use the `storage` property that is returned
+by the `defineStorage` function.
+
+```ts
+import { storage } from "./schema"
+
+storage.set("theme", "light")
+const theme = storage.get("theme")
 ```
 
 ## Installation

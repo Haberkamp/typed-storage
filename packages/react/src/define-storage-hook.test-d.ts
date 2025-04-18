@@ -1,10 +1,10 @@
 import { z } from "zod"
-import { defineStorage } from "./define-storage.js"
+import { defineStorageHook } from "./define-storage-hook.js"
 import { test, assertType, expectTypeOf } from "vitest"
 
 test("it's not possible to insert a value that violates the schema", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -17,7 +17,7 @@ test("it's not possible to insert a value that violates the schema", () => {
 
 test("it's not possible to access a non string key", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -28,7 +28,7 @@ test("it's not possible to access a non string key", () => {
 
 test("it's not possible to access a non existent key", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -39,7 +39,7 @@ test("it's not possible to access a non existent key", () => {
 
 test("the value has a type of string", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -52,7 +52,7 @@ test("the value has a type of string", () => {
 
 test("the value has a type of boolean", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someBooleanKey: z.boolean(),
   })
 
@@ -65,7 +65,7 @@ test("the value has a type of boolean", () => {
 
 test("the value has a type of number", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someNumberKey: z.number(),
   })
 
@@ -78,7 +78,7 @@ test("the value has a type of number", () => {
 
 test("value must have type of undefined", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someNumberKey: z.number(),
   })
 
@@ -91,7 +91,7 @@ test("value must have type of undefined", () => {
 
 test("value is not undefined when setting a fallback value", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someNumberKey: z.number(),
   })
 
@@ -104,7 +104,7 @@ test("value is not undefined when setting a fallback value", () => {
 
 test("value can be undefined when fallback is set but the schema includes undefined", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someNumberKey: z.number().optional(),
   })
 
@@ -117,7 +117,7 @@ test("value can be undefined when fallback is set but the schema includes undefi
 
 test("fallback value must have the conform to the schema", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someNumberKey: z.number(),
   })
 
