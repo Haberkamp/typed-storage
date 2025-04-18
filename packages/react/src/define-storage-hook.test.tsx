@@ -1,7 +1,7 @@
 import { beforeEach, expect, test } from "vitest"
 import { renderHook } from "vitest-browser-react"
 import { act } from "react"
-import { defineStorage } from "./define-storage.js"
+import { defineStorageHook } from "./define-storage-hook.js"
 import { z } from "zod"
 
 beforeEach(() => {
@@ -10,7 +10,7 @@ beforeEach(() => {
 
 test("writes to the storage", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -32,7 +32,7 @@ test("writes to the storage", () => {
 
 test("reads existing value from the storage", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -49,7 +49,7 @@ test("reads existing value from the storage", () => {
 
 test("unset the value", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -70,7 +70,7 @@ test("unset the value", () => {
 
 test("throws error when value violates schema", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string().min(5),
   })
 
@@ -85,7 +85,7 @@ test("throws error when value violates schema", () => {
 
 test("throws an error when reading a value and it violates the schema", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string().min(5),
   })
 
@@ -97,7 +97,7 @@ test("throws an error when reading a value and it violates the schema", () => {
 
 test("it returns undefined when there's not value for the key", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -112,7 +112,7 @@ test("it returns undefined when there's not value for the key", () => {
 
 test("writes a number to the storage", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someNumberKey: z.number(),
   })
 
@@ -134,7 +134,7 @@ test("writes a number to the storage", () => {
 
 test("writes a boolean to the storage", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someBooleanKey: z.boolean(),
   })
 
@@ -156,7 +156,7 @@ test("writes a boolean to the storage", () => {
 
 test("writes an object to the storage", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someObjectKey: z.object({
       someProperty: z.string(),
     }),
@@ -182,7 +182,7 @@ test("writes an object to the storage", () => {
 
 test("retrieve an object from local storage when mounting the component", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someObjectKey: z.object({
       someProperty: z.string(),
     }),
@@ -204,7 +204,7 @@ test("retrieve an object from local storage when mounting the component", () => 
 
 test("returns the fallback value when the value for the key is not in the storage", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -219,7 +219,7 @@ test("returns the fallback value when the value for the key is not in the storag
 
 test("throws an error when the fallback value violates the schema", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -232,7 +232,7 @@ test("throws an error when the fallback value violates the schema", () => {
 
 test("returns the set value when a fallback value is defined but the key exists in the storage", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 
@@ -249,7 +249,7 @@ test("returns the set value when a fallback value is defined but the key exists 
 
 test("unsetting the key returns the fallback value", () => {
   // ARRANGE
-  const { useStorage } = defineStorage({
+  const { useStorage } = defineStorageHook({
     someKey: z.string(),
   })
 

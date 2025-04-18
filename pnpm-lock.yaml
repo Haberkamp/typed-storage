@@ -60,6 +60,9 @@ importers:
       '@standard-schema/spec':
         specifier: ^1.0.0
         version: 1.0.0
+      '@typed-storage/core':
+        specifier: workspace:*
+        version: link:../core
       '@types/react':
         specifier: ^19.1.1
         version: 19.1.1

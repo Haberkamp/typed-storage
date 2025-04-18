@@ -14,6 +14,7 @@
     "lint": "eslint ./src"
   },
   "dependencies": {
+    "@typed-storage/core": "workspace:*",
     "@standard-schema/spec": "^1.0.0"
   },
   "peerDependencies": {
