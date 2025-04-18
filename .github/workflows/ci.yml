@@ -34,6 +34,9 @@ jobs:
       - name: Check formatting
         run: pnpm run format:check
 
+      - name: Build package
+        run: npx turbo run build
+
       - name: Lint files
         run: npx turbo run lint
 
@@ -43,9 +46,6 @@ jobs:
 
       - name: Run tests
         run: npx turbo run test
-
-      - name: Build package
-        run: npx turbo run build
 
       - name: Check exports
         run: npx turbo run test:exports
