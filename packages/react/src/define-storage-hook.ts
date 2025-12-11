@@ -1,5 +1,6 @@
 import { type StandardSchemaV1 } from "@standard-schema/spec"
 import { useState } from "react"
+import { useStorageDriver } from "./storage-context.js"
 
 type KeyOf<T extends object> = Extract<keyof T, string>
 
@@ -43,6 +44,8 @@ export function defineStorageHook<T extends Record<string, StandardSchemaV1>>(
     StandardSchemaV1.InferOutput<T[K]> | undefined,
     (value: StandardSchemaV1.InferInput<T[K]> | undefined) => void,
   ] {
+    const driver = useStorageDriver()
+
     // Validate fallback value if provided
     let validatedFallback: StandardSchemaV1.InferOutput<T[K]> | undefined =
       undefined
@@ -60,8 +63,9 @@ export function defineStorageHook<T extends Record<string, StandardSchemaV1>>(
     const [value, setValue] = useState<
       StandardSchemaV1.InferOutput<T[K]> | undefined
     >(() => {
-      const storedValue = localStorage.getItem(key)
-      if (storedValue === null) return validatedFallback
+      const storedValue = driver.getItem(key)
+      if (storedValue === undefined || storedValue === null)
+        return validatedFallback
 
       let valueToValidate: unknown = storedValue
 
@@ -88,7 +92,7 @@ export function defineStorageHook<T extends Record<string, StandardSchemaV1>>(
       newValue: StandardSchemaV1.InferInput<T[K]> | undefined,
     ): void {
       if (newValue === undefined) {
-        localStorage.removeItem(key)
+        driver.removeItem(key)
         setValue(validatedFallback)
         return
       }
@@ -98,9 +102,9 @@ export function defineStorageHook<T extends Record<string, StandardSchemaV1>>(
       standardValidate(schemaForKey, newValue)
 
       if (typeof newValue === "string") {
-        localStorage.setItem(key, newValue)
+        driver.setItem(key, newValue)
       } else {
-        localStorage.setItem(key, JSON.stringify(newValue))
+        driver.setItem(key, JSON.stringify(newValue))
       }
 
       setValue(newValue)

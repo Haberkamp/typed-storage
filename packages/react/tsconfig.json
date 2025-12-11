@@ -9,6 +9,7 @@
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+    "jsx": "react-jsx",
 
     /* Strictness */
     "strict": true,
@@ -28,5 +29,5 @@
     /* AND if you're building for a library in a monorepo: */
     "declarationMap": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/setup.js"]
 }

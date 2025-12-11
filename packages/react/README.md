@@ -9,7 +9,8 @@
 - Schema validation
 - Automatic type inference
 - useState-like API
-- Use it with zod, validbot, arktype, etc.
+- Simplifies testing using an in-memory storage driver
+- Use it with zod, valibot, arktype, etc.
 
 ## Overview
 
@@ -21,7 +22,7 @@ Hey, I'm Nils. In my spare time [I write about things I learned](https://www.hab
 
 ## Usage
 
-Two steps: define your schema and use the hook, nothing else.
+Three steps: define your schema, wrap your app with the provider, and use the hook.
 
 1. Define your schema
 
@@ -39,7 +40,21 @@ const { useStorage, storage } = defineStorage({
 export { useStorage, storage }
 ```
 
-2. Use the hook
+2. Wrap your app with `StorageProvider`
+
+```tsx
+// main.tsx
+
+import { StorageProvider } from "@typed-storage/react"
+
+createRoot(document.getElementById("root")!).render(
+  <StorageProvider driver={localStorage}>
+    <App />
+  </StorageProvider>,
+)
+```
+
+3. Use the hook
 
 ```tsx
 // my-component.tsx
@@ -91,6 +106,28 @@ import { storage } from "./schema"
 
 storage.set("theme", "light")
 const theme = storage.get("theme")
+```
+
+## Custom Storage Drivers
+
+The `StorageProvider` accepts any driver that implements `getItem`, `setItem`, and `removeItem`. This is useful for testing or using alternative storage backends like `sessionStorage`.
+
+```tsx
+// Using sessionStorage
+<StorageProvider driver={sessionStorage}>
+  <App />
+</StorageProvider>
+```
+
+```tsx
+// Using an in-memory driver for tests
+import { createInMemoryDriver } from "@typed-storage/react"
+
+const inMemoryDriver = createInMemoryDriver()
+
+<StorageProvider driver={inMemoryDriver}>
+  <App />
+</StorageProvider>
 ```
 
 ## Installation

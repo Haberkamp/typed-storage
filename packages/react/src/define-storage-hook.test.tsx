@@ -1,12 +1,17 @@
 import { beforeEach, expect, test } from "vitest"
 import { renderHook } from "vitest-browser-react"
-import { act } from "react"
+import { act, type ReactNode } from "react"
 import { defineStorageHook } from "./define-storage-hook.js"
+import { StorageProvider } from "./storage-context.js"
 import { z } from "zod"
 
 beforeEach(() => {
   localStorage.clear()
 })
+
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <StorageProvider driver={localStorage}>{children}</StorageProvider>
+)
 
 test("writes to the storage", () => {
   // ARRANGE
@@ -14,7 +19,7 @@ test("writes to the storage", () => {
     someKey: z.string(),
   })
 
-  const { result } = renderHook(() => useStorage("someKey"))
+  const { result } = renderHook(() => useStorage("someKey"), { wrapper })
 
   // ACT
   act(() => {
@@ -38,7 +43,7 @@ test("reads existing value from the storage", () => {
 
   localStorage.setItem("someKey", "someValue")
 
-  const subject = renderHook(() => useStorage("someKey"))
+  const subject = renderHook(() => useStorage("someKey"), { wrapper })
 
   // ACT
   const [result] = subject.result.current
@@ -53,7 +58,7 @@ test("unset the value", () => {
     someKey: z.string(),
   })
 
-  const subject = renderHook(() => useStorage("someKey"))
+  const subject = renderHook(() => useStorage("someKey"), { wrapper })
   const [, setValue] = subject.result.current
 
   // ACT
@@ -74,7 +79,7 @@ test("throws error when value violates schema", () => {
     someKey: z.string().min(5),
   })
 
-  const { result } = renderHook(() => useStorage("someKey"))
+  const { result } = renderHook(() => useStorage("someKey"), { wrapper })
 
   // ACT & ASSERT
   act(() => {
@@ -92,7 +97,9 @@ test("throws an error when reading a value and it violates the schema", () => {
   localStorage.setItem("someKey", "hi")
 
   // ACT & ASSERT
-  expect(() => renderHook(() => useStorage("someKey"))).toThrowError()
+  expect(() =>
+    renderHook(() => useStorage("someKey"), { wrapper }),
+  ).toThrowError()
 })
 
 test("it returns undefined when there's not value for the key", () => {
@@ -101,7 +108,7 @@ test("it returns undefined when there's not value for the key", () => {
     someKey: z.string(),
   })
 
-  const subject = renderHook(() => useStorage("someKey"))
+  const subject = renderHook(() => useStorage("someKey"), { wrapper })
 
   // ACT
   const [result] = subject.result.current
@@ -116,7 +123,7 @@ test("writes a number to the storage", () => {
     someNumberKey: z.number(),
   })
 
-  const { result } = renderHook(() => useStorage("someNumberKey"))
+  const { result } = renderHook(() => useStorage("someNumberKey"), { wrapper })
 
   // ACT
   act(() => {
@@ -138,7 +145,7 @@ test("writes a boolean to the storage", () => {
     someBooleanKey: z.boolean(),
   })
 
-  const { result } = renderHook(() => useStorage("someBooleanKey"))
+  const { result } = renderHook(() => useStorage("someBooleanKey"), { wrapper })
 
   // ACT
   act(() => {
@@ -162,7 +169,7 @@ test("writes an object to the storage", () => {
     }),
   })
 
-  const { result } = renderHook(() => useStorage("someObjectKey"))
+  const { result } = renderHook(() => useStorage("someObjectKey"), { wrapper })
 
   // ACT
   act(() => {
@@ -193,7 +200,7 @@ test("retrieve an object from local storage when mounting the component", () => 
     JSON.stringify({ someProperty: "someValue" }),
   )
 
-  const subject = renderHook(() => useStorage("someObjectKey"))
+  const subject = renderHook(() => useStorage("someObjectKey"), { wrapper })
 
   // ACT
   const [result] = subject.result.current
@@ -208,7 +215,9 @@ test("returns the fallback value when the value for the key is not in the storag
     someKey: z.string(),
   })
 
-  const subject = renderHook(() => useStorage("someKey", "fallbackValue"))
+  const subject = renderHook(() => useStorage("someKey", "fallbackValue"), {
+    wrapper,
+  })
 
   // ACT
   const [result] = subject.result.current
@@ -226,7 +235,7 @@ test("throws an error when the fallback value violates the schema", () => {
   // ACT & ASSERT
   expect(() => {
     // @ts-expect-error -- number is not assignable to string
-    renderHook(() => useStorage("someKey", 1))
+    renderHook(() => useStorage("someKey", 1), { wrapper })
   }).toThrowError()
 })
 
@@ -238,7 +247,9 @@ test("returns the set value when a fallback value is defined but the key exists 
 
   localStorage.setItem("someKey", "someValue")
 
-  const subject = renderHook(() => useStorage("someKey", "fallbackValue"))
+  const subject = renderHook(() => useStorage("someKey", "fallbackValue"), {
+    wrapper,
+  })
 
   // ACT
   const [result] = subject.result.current
@@ -253,7 +264,9 @@ test("unsetting the key returns the fallback value", () => {
     someKey: z.string(),
   })
 
-  const subject = renderHook(() => useStorage("someKey", "fallbackValue"))
+  const subject = renderHook(() => useStorage("someKey", "fallbackValue"), {
+    wrapper,
+  })
   const [, setValue] = subject.result.current
 
   // ACT
@@ -265,4 +278,39 @@ test("unsetting the key returns the fallback value", () => {
 
   // ASSERT
   expect(result).toBe("fallbackValue")
+})
+
+test("uses a custom storage driver via StorageProvider", () => {
+  // ARRANGE
+  const inMemoryStore = new Map<string, string>()
+  const inMemoryStorage = {
+    getItem: (key: string) => inMemoryStore.get(key) ?? undefined,
+    setItem: (key: string, value: string) => inMemoryStore.set(key, value),
+    removeItem: (key: string) => inMemoryStore.delete(key),
+  }
+
+  const customWrapper = ({ children }: { children: ReactNode }) => (
+    <StorageProvider driver={inMemoryStorage}>{children}</StorageProvider>
+  )
+
+  const { useStorage } = defineStorageHook({
+    someKey: z.string(),
+  })
+
+  const { result } = renderHook(() => useStorage("someKey"), {
+    wrapper: customWrapper,
+  })
+
+  // ACT
+  act(() => {
+    const [, setValue] = result.current
+    setValue("inMemoryValue")
+  })
+
+  // ASSERT
+  expect(inMemoryStore.get("someKey")).toBe("inMemoryValue")
+  expect(localStorage.getItem("someKey")).toBeNull() // not in localStorage
+
+  const [value] = result.current
+  expect(value).toBe("inMemoryValue")
 })
